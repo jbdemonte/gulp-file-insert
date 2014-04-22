@@ -23,6 +23,9 @@ module.exports = function (options) {
     }
   }
 
+  function escapeRegExp(string) {
+    return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  }
 
   function end () {
     var self = this,
@@ -45,7 +48,7 @@ module.exports = function (options) {
           if (err) {
             throw new Error(ns + ": file (" + options[token] + ") is missing for tag (" + token + ")");
           } else {
-            content = content.replace(token, data);
+            content = content.replace(new RegExp(escapeRegExp(token), "g"), data);
           }
           delete options[token];
           next();
