@@ -2,11 +2,11 @@
 
 <table>
 <tr> 
-<td>Package</td><td>gulp-jquery-closure</td>
+<td>Package</td><td>gulp-file-insert</td>
 </tr>
 <tr>
 <td>Description</td>
-<td>Enclose the content with jQuery definition and more</td>
+<td>Replace custom tokens by files content.</td>
 </tr>
 <tr>
 <td>Node Version</td>
@@ -17,82 +17,17 @@
 ## Usage
 
 ```javascript
-var concat = require('gulp-concat'),
-    jqc = require('gulp-jquery-closure');
+var gfi = require("gulp-file-insert");
 
-gulp.task('sample', function() {
-  gulp.src('./sample.js')
-    .pipe(jqc())
-    .pipe(gulp.dest('./dist/'))
-});
-
-gulp.task('scripts', function() {
-  gulp.src('./lib/*.js')
-    .pipe(concat('all.js'))
-    .pipe(jqc({$: false, window: true, document: true, undefined: true))
-    .pipe(gulp.dest('./dist/'))
-});
+gulp.src('./sample.js')
+  .pipe(gfi({
+    "/* file 1 */": "tmp/file1",
+    "/* file 2 */": "tmp/file2",
+    version: "tmp/version_number"
+  }))
+  .pipe(gulp.dest('./dist/'));
 ```
-
-This will enclose the content defining some variable ($, window, document and undefined) depending on options as describe in jQuery plugin [boilerplate](https://github.com/jquery-boilerplate/jquery-boilerplate/blob/master/src/jquery.boilerplate.js).
-
-Examples:
-
-options: none
-```
-;(function ($) {
-  /* content */
-  })(jQuery);
-```
-
-options: {window: true, document: true, undefined: "undef"}
-```
-;(function ($, window, document, undef) {
-  /* content */
-})(jQuery, window, document);
-```
-
-### Options
-All parameters are optionals.
-<table>
-<tr>
-  <th>Parameter</th>
-  <th>Type</th>
-  <th>Default</th>
-  <th>Description</th>
-</tr>
-<tr>
-  <td>$</td>
-  <td>bool|string</td>
-  <td>true</td>
-  <td>define $ for jQuery</td>
-</tr>
-<tr>
-  <td>window</td>
-  <td>bool|string</td>
-  <td>false</td>
-  <td>define window (current window)</td>
-</tr>
-<tr>
-  <td>document</td>
-  <td>bool|string</td>
-  <td>false</td>
-  <td>define document (current document)</td>
-</tr>
-<tr>
-  <td>undefined</td>
-  <td>bool|string</td>
-  <td>false</td>
-  <td>define undefined from real undefined value</td>
-</tr>
-<tr>
-  <td>newLine</td>
-  <td>string</td>
-  <td>\n</td>
-  <td>newLine separator</td>
-</tr>
-</table>
-
+This will replace into sample.js the tag "/\* file 1 \*/" by the content of the file "tmp/file1", "/\* file 2 \*/" by the content of "tmp/file2" and "version" by the content of "tmp/version_number" each time they appear.
 
 ## LICENSE
 
