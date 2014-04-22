@@ -1,0 +1,42 @@
+{
+  "name": "gulp-file-insert",
+  "description": "Replace custom tokens by files content",
+  "version": "1.0.0",
+  "homepage": "https://github.com/jbdemonte/gulp-file-insert",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jbdemonte/gulp-file-insert.git"
+  },
+  "author": {
+    "name": "Jean-Baptiste DEMONTE",
+    "email": "jbdemonte@gmail.com",
+    "url": "http://jb.demonte.fr"
+  },
+  "main": "./index.js",
+  "keywords": [
+    "gulpplugin",
+    "file",
+    "replace",
+    "token",
+    "template"
+  ],
+  "dependencies": {
+    "through": "^2.3.4",
+    "gulp-util": "^2.2.5"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
+}
