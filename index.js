@@ -11,7 +11,13 @@ module.exports = function (options) {
     options = {};
   }
 
-  var file = null;
+  var key,
+    file = null,
+    keys = [];
+
+  for (key in options) {
+    keys.push(key);
+  }
 
   function write (f){
     if (!f.isNull()) {
@@ -43,19 +49,19 @@ module.exports = function (options) {
     }
 
     function next() {
-      for (token in options) {
-        fs.readFile(options[token], function (err, data) {
+      var key = keys.shift();
+      if (key) {
+        fs.readFile(options[key], function (err, data) {
           if (err) {
-            throw new Error(ns + ": file (" + options[token] + ") is missing for tag (" + token + ")");
+            throw new Error(ns + ": file (" + options[key] + ") is missing for tag (" + key + ")");
           } else {
-            content = content.replace(new RegExp(escapeRegExp(token), "g"), data);
+            content = content.replace(new RegExp(escapeRegExp(key), "g"), data);
           }
-          delete options[token];
           next();
         });
-        return;
+      } else {
+        finalize();
       }
-      finalize();
     }
 
     next();
