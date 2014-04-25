@@ -1,40 +1,67 @@
 var gfi = require("../"),
   should = require("should"),
-  File = require("gulp-util").File,
-  Buffer = require("buffer").Buffer;
+  gutil = require('gulp-util'),
+  fs = require('fs');
 
 require("mocha");
 
+
+var makeFile = function (path) {
+  return new gutil.File({
+    path: path,
+    cwd: 'test/',
+    base: '/files',
+    contents: fs.readFileSync(path)
+  });
+};
+
 describe("gulp-file-insert", function() {
 
-  function test(desc, fileContent, options, result) {
-    var stream = gfi(options);
-    it(desc, function (done) {
+  it('should produce correct file output when including files', function (done) {
 
-      stream.on("data", function (file) {
-        String(file.contents).should.equal(result);
-        done();
-      });
+    var expectedFile = makeFile('test/files/expected/AE');
+    var srcFile = makeFile('test/files/data/AE');
 
-      stream.write(new File({
-        cwd: __dirname,
-        base: "/",
-        path: "data.js",
-        contents: new Buffer(fileContent)
-      }));
-
-      stream.end();
+    var stream = gfi({
+      "/* INS1 */": "test/files/data/B",
+      tag2: "test/files/data/D"
     });
-  }
 
-  test(
-    "should replace 2 token with the content of 2 existing files",
-    "A\n/* INS1 */\nC\ntag2\ntag2\nE",
-    {
-      "/* INS1 */": "test/files/B",
-      tag2: "test/files/D"
-    },
-    "A\nB\nC\nD\nD\nE"
-  );
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+      should.exist(newFile);
+      should.exist(newFile.contents);
+      String(newFile.contents).should.equal(String(expectedFile.contents));
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
+
+
+  it('should detect missing file and emit error', function (done) {
+    var expectedFile = makeFile('test/files/expected/AE');
+    var srcFile = makeFile('test/files/data/AE');
+
+    var stream = gfi({
+      "/* INS1 */": "test/files/data/missing",
+      tag2: "test/files/data/D"
+    });
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
 
 });
