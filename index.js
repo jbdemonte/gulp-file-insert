@@ -53,7 +53,7 @@ module.exports = function (options) {
       if (key) {
         fs.readFile(options[key], function (err, data) {
           if (err) {
-            throw new Error(ns + ": file (" + options[key] + ") is missing for tag (" + key + ")");
+            self.emit('error', new gutil.PluginError(ns, "file (" + options[key] + ") is missing for tag (" + key + ")"));
           } else {
             content = content.replace(new RegExp(escapeRegExp(key), "g"), data);
           }
