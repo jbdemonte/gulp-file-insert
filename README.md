@@ -1,20 +1,13 @@
-## Information
-
-<table>
-<tr> 
-<td>Package</td><td>gulp-file-insert</td>
-</tr>
-<tr>
-<td>Description</td>
-<td>Replace custom tokens by files content.</td>
-</tr>
-<tr>
-<td>Node Version</td>
-<td>>= 0.4</td>
-</tr>
-</table>
+# gulp-file-insert [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
 
 ## Usage
+
+First, install `gulp-file-insert` as a development dependency:
+
+```shell
+npm install --save-dev gulp-file-insert
+```
+
 
 ```javascript
 var gfi = require("gulp-file-insert");
@@ -53,3 +46,13 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+[npm-url]: https://npmjs.org/package/gulp-file-insert
+[npm-image]: https://badge.fury.io/js/gulp-file-insert.png
+
+[travis-url]: http://travis-ci.org/jbdemonte/gulp-file-insert
+[travis-image]: https://secure.travis-ci.org/jbdemonte/gulp-file-insert.png?branch=master
+
+[depstat-url]: https://david-dm.org/jbdemonte/gulp-file-insert
+[depstat-image]: https://david-dm.org/jbdemonte/gulp-file-insert.png
