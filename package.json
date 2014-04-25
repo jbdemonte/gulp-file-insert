@@ -1,7 +1,7 @@
 {
   "name": "gulp-file-insert",
   "description": "Replace custom tokens by files content",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/jbdemonte/gulp-file-insert",
   "repository": {
     "type": "git",
