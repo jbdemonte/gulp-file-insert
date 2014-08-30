@@ -7,12 +7,13 @@ var through = require("through"),
   ns = "gulp-file-insert";
 
 module.exports = function (options) {
+
   if (typeof options !== "object") {
     options = {};
   }
 
   var key,
-    file = null,
+    files = [],
     keys = [];
 
   for (key in options) {
@@ -24,7 +25,7 @@ module.exports = function (options) {
       if (f.isStream()) {
         this.emit("error", new PluginError(ns,  "Streaming not supported"));
       } else {
-        file = f;
+        files.push(f);
       }
     }
   }
@@ -34,37 +35,42 @@ module.exports = function (options) {
   }
 
   function end () {
+
     var self = this,
-      content = file.contents.toString();
+      content = '';
 
-    function finalize() {
-      var newFile = new File({
-        cwd: file.cwd,
-        base: file.base,
-        path: file.path,
-        contents: new Buffer(content)
-      });
-      self.emit("data", newFile);
-      self.emit("end");
-    }
+    for(var i = 0, l = files.length; i < l; i++) {
 
-    function next() {
-      var key = keys.shift();
-      if (key) {
-        fs.readFile(options[key], function (err, data) {
-          if (err) {
-            self.emit('error', new gutil.PluginError(ns, "file (" + options[key] + ") is missing for tag (" + key + ")"));
-          } else {
-            content = content.replace(new RegExp(escapeRegExp(key), "g"), data);
-          }
-          next();
+      var file = files[i];
+
+      function finalize() {
+        var newFile = new File({
+          cwd: file.cwd,
+          base: file.base,
+          path: file.path,
+          contents: new Buffer(content)
         });
-      } else {
+        self.emit("data", newFile);
+      }
+
+      function next() {
+
+        keys.forEach(function (key) {
+          fs.readFile(options[key], function (err, data) {
+            if (err) {
+              self.emit('error', new gutil.PluginError(ns, "file (" + options[key] + ") is missing for tag (" + key + ")"));
+            } else {
+              content = content.replace(new RegExp(escapeRegExp(key), "g"), data);
+            }
+          });
+        });
         finalize();
       }
+
+      next();
     }
 
-    next();
+    self.emit("end");
   }
 
   return through(write, end);
