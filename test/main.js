@@ -24,7 +24,8 @@ describe("gulp-file-insert", function() {
 
     var stream = gfi({
       "/* INS1 */": "test/files/data/B",
-      tag2: "test/files/data/D"
+      tag2: "test/files/data/D",
+      dollar: "test/files/data/DLR"
     });
 
     stream.on('error', function (err) {
