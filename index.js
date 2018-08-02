@@ -41,7 +41,7 @@ module.exports = function (options) {
         cwd: file.cwd,
         base: file.base,
         path: file.path,
-        contents: new Buffer(content)
+        contents: new Buffer.from(content)
       });
       self.emit("data", newFile);
       self.emit("end");
