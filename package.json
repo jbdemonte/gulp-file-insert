@@ -32,7 +32,7 @@
     "test": "mocha"
   },
   "engines": {
-    "node": ">= 10.6"
+    "node": ">= 8.11.3"
   },
   "licenses": [
     {
