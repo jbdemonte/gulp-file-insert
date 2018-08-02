@@ -1,13 +1,14 @@
-var gfi = require("../"),
+var
+  gfi = require("../"),
   should = require("should"),
-  gutil = require('gulp-util'),
-  fs = require('fs');
+  Vinyl = require("vinyl"),
+  fs = require("fs");
 
 require("mocha");
 
 
 var makeFile = function (path) {
-  return new gutil.File({
+  return new Vinyl({
     path: path,
     cwd: 'test/',
     base: '/files',
@@ -15,7 +16,7 @@ var makeFile = function (path) {
   });
 };
 
-describe("gulp-file-insert", function() {
+describe("gulp-file-insert", function () {
 
   it('should produce correct file output when including files', function (done) {
 
