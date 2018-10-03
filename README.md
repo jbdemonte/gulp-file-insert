@@ -51,8 +51,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 [npm-url]: https://npmjs.org/package/gulp-file-insert
 [npm-image]: https://badge.fury.io/js/gulp-file-insert.png
 
-[travis-url]: http://travis-ci.org/warloque/gulp-file-insert
-[travis-image]: https://secure.travis-ci.org/warloque/gulp-file-insert.png?branch=master
+[travis-url]: http://travis-ci.org/jbdemonte/gulp-file-insert
+[travis-image]: https://secure.travis-ci.org/jbdemonte/gulp-file-insert.png?branch=master
 
-[depstat-url]: https://david-dm.org/warloque/gulp-file-insert
-[depstat-image]: https://david-dm.org/warloque/gulp-file-insert.png
+[depstat-url]: https://david-dm.org/jbdemonte/gulp-file-insert
+[depstat-image]: https://david-dm.org/jbdemonte/gulp-file-insert.png
