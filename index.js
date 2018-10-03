@@ -1,9 +1,8 @@
-var through = require("through"),
-  gutil = require("gulp-util"),
+var
+  Vinyl = require("vinyl"),
   Buffer = require("buffer").Buffer,
-  PluginError = gutil.PluginError,
+  es = require("event-stream"),
   fs = require("fs"),
-  File = gutil.File,
   ns = "gulp-file-insert";
 
 module.exports = function (options) {
@@ -19,10 +18,10 @@ module.exports = function (options) {
     keys.push(key);
   }
 
-  function write (f){
+  function write(f) {
     if (!f.isNull()) {
       if (f.isStream()) {
-        this.emit("error", new PluginError(ns,  "Streaming not supported"));
+        this.emit("error", new Error(ns, "Streaming not supported"));
       } else {
         file = f;
       }
@@ -33,16 +32,16 @@ module.exports = function (options) {
     return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   }
 
-  function end () {
+  function end() {
     var self = this,
       content = file.contents.toString();
 
     function finalize() {
-      var newFile = new File({
+      var newFile = new Vinyl({
         cwd: file.cwd,
         base: file.base,
         path: file.path,
-        contents: new Buffer(content)
+        contents: new Buffer.from(content)
       });
       self.emit("data", newFile);
       self.emit("end");
@@ -53,9 +52,11 @@ module.exports = function (options) {
       if (key) {
         fs.readFile(options[key], function (err, data) {
           if (err) {
-            self.emit('error', new gutil.PluginError(ns, "file (" + options[key] + ") is missing for tag (" + key + ")"));
+            self.emit('error', new Error(ns, "file (" + options[key] + ") is missing for tag (" + key + ")"));
           } else {
-            content = content.replace(new RegExp(escapeRegExp(key), "g"), function() { return data });
+            content = content.replace(new RegExp(escapeRegExp(key), "g"), function () {
+              return data
+            });
           }
           next();
         });
@@ -67,5 +68,6 @@ module.exports = function (options) {
     next();
   }
 
-  return through(write, end);
+  return es.through(write, end);
+
 };
